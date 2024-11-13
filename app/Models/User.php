@@ -18,11 +18,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'firstName',
+        'lastName',
         'email',
         'password',
+        'active',
     ];
 
+    public function commands () {
+        return $this->hasMany(Command::class, 'clientMail');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
