@@ -8,9 +8,18 @@ class ShowImage extends Model
 {
     protected $table = 'ShowImage';
     protected $primaryKey = 'id';
+    public $timestamps = false;
 
-    protected $fillable = [
-        'path',
-        'showId',
-    ];
+    protected $fillable = ['url', 'showId'];
+
+    /**
+     * Formater l'image en tableau.
+     */
+    public function toFormattedArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'url' => $this->url,
+        ];
+    }
 }
