@@ -3,51 +3,38 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\JsonSerializableTrait;
 
 class Ticket extends Model
 {
-    protected $table = 'Ticket'; 
-    protected $primaryKey = 'id';
-    public $keyType = 'string'; 
-    public $incrementing = false; 
-    public $timestamps = false; 
+    use JsonSerializableTrait;
 
-    
+    protected $table = 'Ticket';
+    protected $primaryKey = 'id';
+    public $keyType = 'string';
+    public $incrementing = false;
+    public $timestamps = false;
+
     protected $fillable = [
         'id',
         'date',
         'barcode',
-        'clientMmail',
-        'eveningId', 
-        'idCommand',
+        'client_email',
+        'eveningId',
+        'id_command',
         'price',
     ];
 
     
+    protected array $relationsToInclude = ['evening', 'command'];
+
     public function evening()
     {
         return $this->belongsTo(Evening::class, 'eveningId');
     }
 
-    
     public function command()
     {
-        return $this->belongsTo(Command::class, 'idCommand');
-    }
-
-    /**
-     * Formater le ticket en tableau (remplace le DTO).
-     */
-    public function toFormattedArray(): array
-    {
-        return [
-            'id' => $this->id,
-            'date' => $this->date,
-            'barcode' => $this->barcode,
-            'clientMmail' => $this->client_email,
-            'eveningId' => $this->eveningId,
-            'idCommand' => $this->id_command,
-            'price' => $this->price,
-        ];
+        return $this->belongsTo(Command::class, 'id_command');
     }
 }

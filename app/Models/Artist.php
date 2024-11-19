@@ -3,30 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\JsonSerializableTrait;
 
 class Artist extends Model
 {
-    
+    use JsonSerializableTrait;
+
     protected $table = 'Artist';
-
-    
     protected $primaryKey = 'id';
-    protected $keyType = 'int';
-    public $incrementing = true;
-
-   
     public $timestamps = false;
-    
-    protected $fillable = ['id', 'name'];
 
-    /**
-     * Formater l'artiste en tableau (remplace le DTO).
-     */
-    public function toFormattedArray(): array
+    protected $fillable = [
+        'name',
+    ];
+
+    protected array $relationsToInclude = ['shows'];
+
+    public function shows()
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-        ];
+        return $this->belongsToMany(Show::class, 'ShowArtist', 'artistId', 'showId');
     }
 }
