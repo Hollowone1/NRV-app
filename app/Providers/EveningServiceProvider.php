@@ -4,17 +4,10 @@ namespace App\Services;
 
 use App\Models\Evening;
 use App\Exceptions\ServiceEveningNotFoundException;
-use Illuminate\Database\Eloquent\Collection;
 
 class EveningService
 {
-    /**
-     * Récupérer toutes les dates des soirées avec leurs identifiants.
-     *
-     * @return Collection
-     * @throws ServiceEveningNotFoundException
-     */
-    public function getAllDatesWithIdEvening(): Collection
+    public function getAllDatesWithIdEvening()
     {
         $dates = Evening::select('id', 'date')->get();
 
@@ -25,14 +18,7 @@ class EveningService
         return $dates;
     }
 
-    /**
-     * Récupérer une soirée par son ID.
-     *
-     * @param int $id
-     * @return Evening
-     * @throws ServiceEveningNotFoundException
-     */
-    public function getEveningById(int $id): Evening
+    public function getEveningById(int $id)
     {
         $evening = Evening::with(['spot', 'shows'])->find($id);
 
@@ -41,5 +27,30 @@ class EveningService
         }
 
         return $evening;
+    }
+
+    public function getAllThematics(): array
+    {
+        $thematics = Evening::select('thematic')->distinct()->pluck('thematic')->toArray();
+
+        if (empty($thematics)) {
+            throw new ServiceEveningNotFoundException();
+        }
+
+        return $thematics;
+    }
+
+    public function getPlaceByEvening(int $id): array
+    {
+        $evening = Evening::with('spot')->find($id);
+
+        if (!$evening || !$evening->spot) {
+            throw new ServiceEveningNotFoundException();
+        }
+
+        return [
+            'nbStanding' => $evening->spot->nb_standing,
+            'nbSeated' => $evening->spot->nb_seated,
+        ];
     }
 }

@@ -9,12 +9,11 @@ class SpotService
 {
     public function getSpots(): Collection
     {
-        $spots = Spot::with('images')->get();
+        return Spot::with('images')->get();
+    }
 
-        if ($spots->isEmpty()) {
-            throw new \App\Exceptions\ServiceEveningNotFoundException('No spots found.');
-        }
-
-        return $spots;
+    public function getAllNameSpots(): array
+    {
+        return Spot::select('name')->distinct()->pluck('name')->toArray();
     }
 }

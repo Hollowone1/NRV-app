@@ -21,8 +21,6 @@ class EveningController extends Controller
 
     /**
      * Récupérer toutes les dates des soirées.
-     *
-     * @return JsonResponse
      */
     public function getAllDatesEvening(): JsonResponse
     {
@@ -42,9 +40,6 @@ class EveningController extends Controller
 
     /**
      * Récupérer une soirée par ID.
-     *
-     * @param int $id
-     * @return JsonResponse
      */
     public function getEveningById(int $id): JsonResponse
     {
@@ -54,6 +49,44 @@ class EveningController extends Controller
             return response()->json([
                 'type' => 'resource',
                 'evening' => $evening->toFormattedArray(),
+            ], Response::HTTP_OK);
+        } catch (ServiceEveningNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], $e->getStatusCode());
+        }
+    }
+
+    /**
+     * Récupérer toutes les thématiques des soirées.
+     */
+    public function getAllThematics(): JsonResponse
+    {
+        try {
+            $thematics = $this->serviceEvening->getAllThematics();
+
+            return response()->json([
+                'type' => 'resource',
+                'thematics' => $thematics,
+            ], Response::HTTP_OK);
+        } catch (ServiceEveningNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], $e->getStatusCode());
+        }
+    }
+
+    /**
+     * Récupérer le nombre de places pour une soirée.
+     */
+    public function getNbPlace(int $id): JsonResponse
+    {
+        try {
+            $places = $this->serviceEvening->getPlaceByEvening($id);
+
+            return response()->json([
+                'type' => 'resource',
+                'places' => $places,
             ], Response::HTTP_OK);
         } catch (ServiceEveningNotFoundException $e) {
             return response()->json([

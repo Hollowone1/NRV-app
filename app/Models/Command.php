@@ -15,6 +15,9 @@ class Command extends Model
     public $incrementing = false;
     public $timestamps = false;
 
+    public const ETAT_CREE = 1;
+    public const ETAT_VALIDE = 2;
+
     protected $fillable = [
         'id',
         'dateCommande',

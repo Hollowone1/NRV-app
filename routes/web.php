@@ -16,9 +16,7 @@ Route::prefix('evenings')->group(function(){
     Route::get('thematics', [EveningController::class, 'getAllThematicEvening'])->name('getAllThematicEvening');
 });
 
-Route::prefix('places')->group(function(){
-    Route::get('{id}', [PlaceController::class, 'getNumberPlace'])->name('getNumberPlace');
-});
+
 
 Route::prefix('commands')->group(function(){
     Route::get('{id}', [CommandController::class, 'getCommandById'])->name('getCommandById');
