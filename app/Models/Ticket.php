@@ -19,9 +19,9 @@ class Ticket extends Model
         'id',
         'date',
         'barcode',
-        'client_email',
+        'clientMmail',
         'eveningId',
-        'id_command',
+        'idCommand',
         'price',
     ];
 

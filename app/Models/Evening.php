@@ -18,7 +18,7 @@ class Evening extends Model
         'thematic',
         'date',
         'price',
-        'reduced_price',
+        'reducedPrice',
         'spotId',
     ];
 
